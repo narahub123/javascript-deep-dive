@@ -30,37 +30,95 @@ o.__proto__; // Object.prototype
 // }
 
 // 16.3 accessor property
-const person = {
-  // data property
-  firstName: "Umgmo",
-  LastName: "Lee",
+// const person = {
+//   // data property
+//   firstName: "Umgmo",
+//   LastName: "Lee",
 
-  // fullName : accessor property
-  // getter
-  get fullName() {
-    return `${this.firstName} ${this.LastName}`;
-  },
+//   // fullName : accessor property
+//   // getter
+//   get fullName() {
+//     return `${this.firstName} ${this.LastName}`;
+//   },
 
-  // setter
-  set fullName(name) {
-    [this.firstName, this.LastName] = name.split(" ");
-  },
-};
+//   // setter
+//   set fullName(name) {
+//     [this.firstName, this.LastName] = name.split(" ");
+//   },
+// };
 
-// 데이터 프로퍼티를 통한 프로퍼티 값의 참조 
-console.log(person.firstName + " " + person.LastName); // Umgmo Lee
+// // 데이터 프로퍼티를 통한 프로퍼티 값의 참조
+// console.log(person.firstName + " " + person.LastName); // Umgmo Lee
 
-// 접근자 프로퍼티를 통한 프로퍼티 값의 저장 
-person.fullName = "Heegun Lee";
-console.log(person); // {firstName: 'Heegun', LastName: 'Lee'}
+// // 접근자 프로퍼티를 통한 프로퍼티 값의 저장
+// person.fullName = "Heegun Lee";
+// console.log(person); // {firstName: 'Heegun', LastName: 'Lee'}
 
-// 접근자 프로퍼티를 통한 프로퍼티 값의 참조 
-console.log(person.fullName); // Heegun Lee
+// // 접근자 프로퍼티를 통한 프로퍼티 값의 참조
+// console.log(person.fullName); // Heegun Lee
 
-// firstName은 데이터 프로퍼티 
-let descriptor = Object.getOwnPropertyDescriptor(person, "firstName");
-console.log(descriptor); // {value: 'Heegun', writable: true, enumerable: true, configurable: true}
+// // firstName은 데이터 프로퍼티
+// let descriptor = Object.getOwnPropertyDescriptor(person, "firstName");
+// console.log(descriptor); // {value: 'Heegun', writable: true, enumerable: true, configurable: true}
 
-// fullName은 접근자 프로퍼티 
-descriptor = Object.getOwnPropertyDescriptor(person, "fullName");
-console.log(descriptor); // {enumerable: true, configurable: true, get: ƒ, set: ƒ}
+// // fullName은 접근자 프로퍼티
+// descriptor = Object.getOwnPropertyDescriptor(person, "fullName");
+// console.log(descriptor); // {enumerable: true, configurable: true, get: ƒ, set: ƒ}
+
+// 16.4
+// const person = {};
+
+// Object.defineProperty(person, "firstName", {
+//   value: "Ungmo",
+//   writable: true,
+//   enumerable: true,
+//   configurable: true,
+// });
+
+// Object.defineProperty(person, "lastName", {
+//   value: "Lee",
+// });
+
+// let descriptor = Object.getOwnPropertyDescriptor(person, "firstName");
+
+// console.log(descriptor); // {value: 'Ungmo', writable: true, enumerable: true, configurable: true}
+
+// // 디스크립터 객체의 프로퍼티를 누락시키면, undefined, false가 기본값
+// descriptor = Object.getOwnPropertyDescriptor(person, "lastName");
+// console.log(descriptor); // {value: 'Lee', writable: false, enumerable: false, configurable: false}
+
+// // enumerable : false
+// console.log(Object.keys(person)); // ['firstName']
+
+// // writable : false
+// // 에러가 발생하지 않고 무시됨
+// person.lastName = "Kim";
+// console.log(person.lastName); // 'Lee'
+
+// // configurable : false
+// // 에러가 발생하지 않고 무시됨
+// delete person.lastName;
+// console.log(person.lastName); // 'Lee'
+
+// descriptor = Object.getOwnPropertyDescriptor(person, "lastName");
+// console.log("lastName", descriptor);
+// // lastName {value: 'Lee', writable: false, enumerable: false, configurable: false}
+
+// Object.defineProperty(person, "fullName", {
+//   get() {
+//     return `${this.firstName} ${this.lastName}`;
+//   },
+
+//   set(name) {
+//     [this.firstName, this.lastName] = name.split(" ");
+//   },
+
+//   enumerable: true,
+//   configurable: true,
+// });
+
+// descriptor = Object.getOwnPropertyDescriptor(person, "fullName");
+// console.log("fullName", descriptor); // fullName {enumerable: true, configurable: true, get: ƒ, set: ƒ}
+
+// person.fullName = "Heegun Lee";
+// console.log(person); // {firstName: 'Heegun', lastName: 'Lee'}
